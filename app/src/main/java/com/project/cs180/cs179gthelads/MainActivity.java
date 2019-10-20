@@ -9,11 +9,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URI;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 public class MainActivity extends AppCompatActivity {
-    ServerConnection Connection;
     ProgressDialog progressDialog;
     Button login;
 
@@ -24,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
 
         login = findViewById(R.id.login);
 
-        Connection = new ServerConnection();
         progressDialog = new ProgressDialog(this);
 
         login.setOnClickListener(new View.OnClickListener(){
@@ -35,36 +39,39 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private class ServerLogin extends AsyncTask<String,String,String>{
-        String message = "";
+     private class ServerLogin extends AsyncTask<String,String,String>{
 
         protected void onPreExecute(){
-            progressDialog.setMessage("Loading");
-            progressDialog.show();
             super.onPreExecute();
         }
 
         protected String doInBackground(String... params){
+            String url = "http://172.119.206.111/connect.php";
+            try{
+                HttpClient current = new DefaultHttpClient();
+                HttpGet destination = new HttpGet();
+                destination.setURI(new URI(url));
+                HttpResponse status = current.execute(destination);
 
-            Connection ping = Connection.PING();
-            if(ping == null){
-                message = "Failed to contact server";
-            }
-            else{
-                message = "Server contacted successfully";
-                try {
-                    ping.close();
-                } catch(SQLException SQLe){
-                    Log.e("ERROR", SQLe.getMessage());
+                BufferedReader input = new BufferedReader(new InputStreamReader(status.getEntity().getContent()));
+                StringBuffer response = new StringBuffer("");
+                String line="";
+
+                while((line = input.readLine()) != null) {
+                    response.append(line);
+                    break;
                 }
-            }
 
-            return message;
+                input.close();
+                return response.toString();
+            } catch(Exception e){
+                Log.e("ERROR PHP-URL-Exception", e.getMessage());
+                return "ERROR connecting to Apache Server";
+            }
         }
 
         protected void onPostExecute(String message){
             Toast.makeText(getBaseContext(),""+message, Toast.LENGTH_LONG).show();
-            progressDialog.hide();
         }
     }
 }
