@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -74,6 +76,54 @@ public class MainActivity extends AppCompatActivity {
 
         startActivityForResult( intent, 0 );
     }
+
+    //Marco ends******
+    //Sunny starts****
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        Log.i( "MakeMachine", "resultCode: " + resultCode );
+        switch( resultCode )
+        {
+            case 0:
+                Log.i( "MakeMachine", "User cancelled" );
+                break;
+
+            case -1:
+                onPhotoTaken();
+                break;
+        }
+    }
+
+
+    protected void onPhotoTaken()
+    {
+        _taken = true;
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 4;
+
+        Bitmap bitmap = BitmapFactory.decodeFile( _path, options );
+        _image.setImageBitmap(bitmap);
+
+        _field.setVisibility( View.GONE );
+    }
+
+    @Override
+    protected void onSaveInstanceState( Bundle outState ) {
+        outState.putBoolean( MainActivity.PHOTO_TAKEN, _taken );
+    }
+
+    @Override
+    protected void onRestoreInstanceState( Bundle savedInstanceState)
+    {
+        Log.i( "MakeMachine", "onRestoreInstanceState()");
+        if( savedInstanceState.getBoolean( MainActivity.PHOTO_TAKEN ) ) {
+            onPhotoTaken();
+        }
+    }
+
 
 
      private class ServerLogin extends AsyncTask<String,String,String>{
