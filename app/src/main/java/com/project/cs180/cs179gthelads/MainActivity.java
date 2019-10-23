@@ -1,6 +1,6 @@
 package com.project.cs180.cs179gthelads;
 
-import android.annotation.SuppressLint;
+import android.content.Context;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -26,7 +27,10 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.io.IOException;
 import java.net.URI;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -53,8 +57,10 @@ public class MainActivity extends AppCompatActivity {
         _field = findViewById( R.id.field );
         _button = findViewById( R.id.button );
         _button.setOnClickListener( new ButtonClickHandler() );
+        String time = new SimpleDateFormat("yyyyMMddHHmmSS").format(new Date());
+        String pictureFile = "Pic" + time;
+        _path = Environment.DIRECTORY_DCIM + "/Camera/" + pictureFile + ".jpg";
 
-        _path = Environment.getExternalStorageDirectory() + "/images/make_machine_example.jpg";
         // May need to change the path later on
 
     }
@@ -68,13 +74,15 @@ public class MainActivity extends AppCompatActivity {
 
     protected void startCameraActivity()
     {
-        File file = new File( _path );
-        Uri outputFileUri = Uri.fromFile( file );
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+            File file = new File(_path);
+            Uri outputFileUri = Uri.fromFile( file );
 
-        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE );
-        intent.putExtra( MediaStore.EXTRA_OUTPUT, outputFileUri );
+            Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE );
+            intent.putExtra( MediaStore.EXTRA_OUTPUT, outputFileUri );
 
-        startActivityForResult( intent, 0 );
+            startActivityForResult( intent, 0 );
     }
 
     //Marco ends******
