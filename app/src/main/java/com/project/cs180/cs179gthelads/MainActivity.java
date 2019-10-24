@@ -1,16 +1,14 @@
 package com.project.cs180.cs179gthelads;
 
-import android.content.Context;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Environment;
-import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -35,13 +33,12 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
-    Button login;
     protected Button _button;
     protected ImageView _image;
     protected TextView _field;
-    protected String _path;
-    protected boolean _taken;
+    protected String photopath;
     protected static final String PHOTO_TAKEN = "photo_taken";
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     //@SuppressLint("CutPasteId")
     @Override
@@ -52,17 +49,11 @@ public class MainActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
 
-
         _image = findViewById( R.id.image );
         _field = findViewById( R.id.field );
         _button = findViewById( R.id.button );
         _button.setOnClickListener( new ButtonClickHandler() );
-        String time = new SimpleDateFormat("yyyyMMddHHmmSS").format(new Date());
-        String pictureFile = "Pic" + time;
-        _path = Environment.DIRECTORY_DCIM + "/Camera/" + pictureFile + ".jpg";
-
         // May need to change the path later on
-
     }
 
     public class ButtonClickHandler implements View.OnClickListener
@@ -72,66 +63,36 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    protected void startCameraActivity()
-    {
-        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-        StrictMode.setVmPolicy(builder.build());
-            File file = new File(_path);
-            Uri outputFileUri = Uri.fromFile( file );
+    private void startCameraActivity() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if(takePictureIntent.resolveActivity(getPackageManager()) != null){
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
 
-            Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE );
-            intent.putExtra( MediaStore.EXTRA_OUTPUT, outputFileUri );
-
-            startActivityForResult( intent, 0 );
     }
 
     //Marco ends******
     //Sunny starts****
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        Log.i( "MakeMachine", "resultCode: " + resultCode );
-        switch( resultCode )
-        {
-            case 0:
-                Log.i( "MakeMachine", "User cancelled" );
-                break;
-
-            case -1:
-                onPhotoTaken();
-                break;
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            _image.setImageBitmap(imageBitmap);
         }
     }
 
-
-    protected void onPhotoTaken()
-    {
-        _taken = true;
-
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = 4;
-
-        Bitmap bitmap = BitmapFactory.decodeFile( _path, options );
-        _image.setImageBitmap(bitmap);
-
-        _field.setVisibility( View.GONE );
+    // Fix this code
+    private File createImageFile() throws IOException{
+        // Create image file
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+        photopath = image.getAbsolutePath();
+        return image;
     }
-
-    @Override
-    protected void onSaveInstanceState( Bundle outState ) {
-        outState.putBoolean( MainActivity.PHOTO_TAKEN, _taken );
-    }
-
-    @Override
-    protected void onRestoreInstanceState( Bundle savedInstanceState)
-    {
-        Log.i( "MakeMachine", "onRestoreInstanceState()");
-        if( savedInstanceState.getBoolean( MainActivity.PHOTO_TAKEN ) ) {
-            onPhotoTaken();
-        }
-    }
-
 
 
      private class ServerLogin extends AsyncTask<String,String,String>{
