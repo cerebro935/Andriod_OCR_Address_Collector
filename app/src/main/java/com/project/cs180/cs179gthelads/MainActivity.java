@@ -1,12 +1,15 @@
 package com.project.cs180.cs179gthelads;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.graphics.Bitmap;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
@@ -39,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
     protected String photopath;
     protected static final String PHOTO_TAKEN = "photo_taken";
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    private Uri file;
+    Bitmap help1;
+    ThumbnailUtils thumbnail;
 
     //@SuppressLint("CutPasteId")
     @Override
@@ -64,7 +70,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startCameraActivity() {
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Get URI from file
+        file = Uri.fromFile(createImageFile());
+        // Get URI File
+        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, file);
+
         if(takePictureIntent.resolveActivity(getPackageManager()) != null){
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
@@ -76,22 +89,36 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            _image.setImageBitmap(imageBitmap);
+        if (requestCode == REQUEST_IMAGE_CAPTURE){
+            if(resultCode == Activity.RESULT_OK){
+                try{
+                    help1 = MediaStore.Images.Media.getBitmap(getContentResolver(), file);
+                    Log.i("Height:", Integer.toString(help1.getHeight()));
+                    Log.i("Width:", Integer.toString(help1.getWidth()));
+                    _image.setImageBitmap(thumbnail.extractThumbnail(help1,help1.getWidth(),help1.getHeight()));
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     // Fix this code
-    private File createImageFile() throws IOException{
-        // Create image file
+    private File createImageFile(){
+        File folder = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        if(!folder.exists()) {
+            folder.mkdir();
+        }
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
-        photopath = image.getAbsolutePath();
-        return image;
+        File image_file = null;
+        try{
+            image_file = File.createTempFile(imageFileName,".jpg",folder);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        photopath = image_file.getAbsolutePath();
+        return image_file;
     }
 
 
