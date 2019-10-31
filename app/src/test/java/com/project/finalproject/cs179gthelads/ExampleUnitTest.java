@@ -1,4 +1,4 @@
-package com.project.cs180.cs179gthelads;
+package com.project.finalproject.cs179gthelads;
 
 import org.junit.Test;
 
