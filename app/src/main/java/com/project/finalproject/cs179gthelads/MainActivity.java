@@ -26,6 +26,7 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     protected Button _button;
+    protected Button _testButton;
     protected ImageView _image;
     protected TextView _field;
     protected String photopath;
@@ -46,7 +47,9 @@ public class MainActivity extends AppCompatActivity {
         _image = findViewById( R.id.image );
         _field = findViewById( R.id.field );
         _button = findViewById( R.id.button );
+        _testButton = findViewById( R.id.button3);
         _button.setOnClickListener( new ButtonClickHandler() );
+        _testButton.setOnClickListener( new changeActivity() );
         // May need to change the path later on
     }
 
@@ -55,6 +58,15 @@ public class MainActivity extends AppCompatActivity {
         public void onClick( View view ){
             startCameraActivity();
         }
+    }
+
+    public class changeActivity implements View.OnClickListener{
+        public void onClick(View view){ newActivity();}
+    }
+
+    private void newActivity(){
+        Intent intent = new Intent(this, Main2Activity.class);
+        startActivity(intent);
     }
 
     private void startCameraActivity() {
