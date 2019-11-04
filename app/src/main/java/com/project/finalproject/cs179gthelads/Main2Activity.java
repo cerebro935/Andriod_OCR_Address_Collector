@@ -21,8 +21,8 @@ public class Main2Activity extends AppCompatActivity {
         _submitButton = findViewById( R.id.button2 );
         _connectButton = findViewById(R.id.button4);
 
-        _connectButton.setOnClickListener(new connectClick());
-//        _submitButton.setOnClickListener( new Server );
+        _connectButton.setOnClickListener(new connectClick() );
+        _submitButton.setOnClickListener( new submitClick() );
     }
 
     public class connectClick implements View.OnClickListener{
@@ -31,9 +31,20 @@ public class Main2Activity extends AppCompatActivity {
         }
     }
 
+    public class submitClick implements View.OnClickListener{
+        public void onClick( View view ){
+            startSubmitActivity();
+        }
+    }
+
     private void startConnectActivity(){
-        Server server = new Server();
         String message = Server.connect();
         Toast.makeText(getBaseContext(),""+message, Toast.LENGTH_LONG).show();
+    }
+
+    private void startSubmitActivity(){
+        String message = Server.insert();
+        Toast.makeText(getBaseContext(),""+message, Toast.LENGTH_LONG).show();
+
     }
 }
