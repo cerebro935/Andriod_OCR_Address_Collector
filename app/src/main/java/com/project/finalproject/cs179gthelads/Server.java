@@ -58,8 +58,10 @@ public class Server extends AsyncTask<String, String, String>{
             String city = "";
             String state = "";
             int postal = 0;
+            String rand = "this random string";
 
-            url = "http://172.119.206.111/testinsert.php";
+            url = "http://172.119.206.111/testinsert.php?var="+rand;
+            url = url.replaceAll("\\s+", "%20");
 
 
 
