@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 public class Main2Activity extends AppCompatActivity {
     protected Button _submitButton;
@@ -38,13 +37,15 @@ public class Main2Activity extends AppCompatActivity {
     }
 
     private void startConnectActivity(){
-        String message = Server.connect();
-        Toast.makeText(getBaseContext(),""+message, Toast.LENGTH_LONG).show();
+        Server server = new Server();
+        server.decideButton(this,0);
+        server.execute();
     }
 
     private void startSubmitActivity(){
-        String message = Server.insert();
-        Toast.makeText(getBaseContext(),""+message, Toast.LENGTH_LONG).show();
+        Server server = new Server();
+        server.decideButton(this,1);
+        server.execute();
 
     }
 }
