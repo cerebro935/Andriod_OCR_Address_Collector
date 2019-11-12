@@ -1,109 +1,106 @@
 package com.project.finalproject.cs179gthelads;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.media.ThumbnailUtils;
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Rect;
+import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
-import android.graphics.Bitmap;
 import android.os.Environment;
-import android.os.StrictMode;
-import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.FrameLayout;
 
+import com.googlecode.tesseract.android.TessBaseAPI;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
-    ProgressDialog progressDialog;
-    protected Button _button;
-    protected Button _testButton;
-    protected ImageView _image;
-    protected TextView _field;
+    private Camera mCamera;
+    private CameraPreview mPreview;
     protected String photopath;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-    private Uri file;
-    Bitmap help1;
-    ThumbnailUtils thumbnail;
+    private Uri pfile;
+    private TessOcr myTess;
+
+
 
     //@SuppressLint("CutPasteId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        myTess = new TessOcr(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Button captureButton = (Button) findViewById(R.id.button_capture);
+        captureButton.setOnClickListener(new ButtonClickHandler());
+        // Create an instance of Camera
+        Log.d("Hello", "HelLOO");
+        mCamera = getCameraInstance();
+        Log.d("Hello", "HelLOO");
 
-        progressDialog = new ProgressDialog(this);
 
-        _image = findViewById( R.id.image );
-        _field = findViewById( R.id.field );
-        _button = findViewById( R.id.button );
-        _testButton = findViewById( R.id.button3);
-        _button.setOnClickListener( new ButtonClickHandler() );
-        _testButton.setOnClickListener( new changeActivity() );
-        // May need to change the path later on
+        // Create our Preview view and set it as a the content
+        mPreview = new CameraPreview(this, mCamera);
+        FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
+        preview.addView(mPreview);
+
     }
 
     public class ButtonClickHandler implements View.OnClickListener
     {
         public void onClick( View view ){
-            startCameraActivity();
+            mCamera.takePicture(null, null, mPicture);
         }
     }
 
-    public class changeActivity implements View.OnClickListener{
-        public void onClick(View view){ newActivity();}
-    }
-
-    private void newActivity(){
-        Intent intent = new Intent(this, Main2Activity.class);
-        startActivity(intent);
-    }
-
-    private void startCameraActivity() {
-        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-        StrictMode.setVmPolicy(builder.build());
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Get URI from file
-        file = Uri.fromFile(createImageFile());
-        // Get URI File
-        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, file);
-
-        if(takePictureIntent.resolveActivity(getPackageManager()) != null){
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
-
-    }
-
-    //Marco ends******
-    //Sunny starts****
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE){
-            if(resultCode == Activity.RESULT_OK){
-                try{
-                    help1 = MediaStore.Images.Media.getBitmap(getContentResolver(), file);
-                    Log.i("Height:", Integer.toString(help1.getHeight()));
-                    Log.i("Width:", Integer.toString(help1.getWidth()));
-                    _image.setImageBitmap(thumbnail.extractThumbnail(help1,help1.getWidth(),help1.getHeight()));
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-            }
+    /** Check if this device has a camera */
+    private boolean checkCameraHardware(Context context) {
+        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
+            // this device has a camera
+            return true;
+        } else {
+            // no camera on this device
+            return false;
         }
     }
 
-    // Fix this code
+    /** A safe way to get an instance of the Camera object. */
+    public static Camera getCameraInstance(){
+        Camera c = null;
+        try {
+            c = Camera.open(); // attempt to get a Camera instance
+            Camera.Parameters params = c.getParameters();
+            params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+            c.setParameters(params);
+
+            Log.d("Here", "Camera Made");
+        }
+        catch (Exception e){
+            // Camera is not available (in use or does not exist)
+            Log.d("Error:", e.getMessage());
+        }
+        return c; // returns null if camera is unavailable
+    }
+
+    // Create file
     private File createImageFile(){
         File folder = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         if(!folder.exists()) {
@@ -120,6 +117,51 @@ public class MainActivity extends AppCompatActivity {
         photopath = image_file.getAbsolutePath();
         return image_file;
     }
+
+    private Camera.PictureCallback mPicture = new Camera.PictureCallback(){
+        @Override
+        public void onPictureTaken(byte[] data, Camera camera){
+            File pictureFile = createImageFile();
+            if(pictureFile == null){
+                Log.d("Media:", "Error creating media");
+                return;
+            }
+            Log.d("File", "Created");
+            try{
+                FileOutputStream fos = new FileOutputStream(pictureFile);
+                fos.write(data);
+                fos.close();
+            }catch(FileNotFoundException e){
+                Log.d("Error-", "File not found: " + e.getMessage());
+            } catch(IOException e){
+                Log.d("Error-", "Error Accessing File: " + e.getMessage());
+            }
+            // Seprate this into a function to reduce coding space
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            pfile = Uri.fromFile(pictureFile);
+            Bitmap bitmap = BitmapFactory.decodeFile(new File(pfile.getPath()).getAbsolutePath(), options);
+            Log.d("Height", Integer.toString(options.outHeight));
+            Log.d("Width", Integer.toString(options.outWidth));
+            pictureFile.delete();
+            bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+            myTess.TessInit();
+            myTess.readImage(bitmap);
+
+            mCamera.stopPreview();
+            mCamera.startPreview();
+
+        }
+
+    };
+
+    // Releasing Camera
+    private void releaseCamera(){
+        if(mCamera != null){
+            mCamera.release();
+            mCamera = null;
+        }
+    }
+
 
 
 }
