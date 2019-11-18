@@ -1,12 +1,15 @@
 package com.project.finalproject.cs179gthelads;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,7 +20,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
 
@@ -39,14 +44,22 @@ public class MainActivity extends AppCompatActivity {
     protected String photopath;
     private Uri pfile;
     private TessOcr myTess;
+    Dialog myDialog;
+    protected String myString = "no result";
 
 
 
     //@SuppressLint("CutPasteId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        myDialog = new Dialog(this);
         myTess = new TessOcr(this);
         super.onCreate(savedInstanceState);
+        try{
+            this.getSupportActionBar().hide();
+        }catch(NullPointerException e){
+            Log.d("Error: ", e.getMessage());
+        }
         setContentView(R.layout.activity_main);
 
         Button captureButton = (Button) findViewById(R.id.button_capture);
@@ -62,12 +75,46 @@ public class MainActivity extends AppCompatActivity {
         FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
         preview.addView(mPreview);
 
+
+    }
+
+    public void ShowPopup(){
+        TextView confirmTxt;
+        TextView close;
+        Button  subBtn;
+        EditText myInput;
+
+        myDialog.setContentView(R.layout.popup);
+        close = myDialog.findViewById(R.id.closetxt);
+        confirmTxt = myDialog.findViewById((R.id.confirm));
+        myInput = myDialog.findViewById(R.id.userInput);
+        myInput.setText(myString);
+        subBtn = myDialog.findViewById(R.id.submit);
+
+
+        subBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                myString = myInput.getText().toString(); //myString <--- edited text
+                myDialog.dismiss();
+            }
+        });
+
+        close.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                myDialog.dismiss();
+            }
+        });
+        //myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        myDialog.show();
     }
 
     public class ButtonClickHandler implements View.OnClickListener
     {
         public void onClick( View view ){
             mCamera.takePicture(null, null, mPicture);
+
         }
     }
 
@@ -143,10 +190,13 @@ public class MainActivity extends AppCompatActivity {
             Log.d("Height", Integer.toString(options.outHeight));
             Log.d("Width", Integer.toString(options.outWidth));
             pictureFile.delete();
+            bitmap = Bitmap.createScaledBitmap(bitmap, 960,720,false);
             bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
             myTess.TessInit();
-            myTess.readImage(bitmap);
+            myString = myTess.readImage(bitmap); //myString <-- extracted info
 
+            //begin popup
+            ShowPopup();
             mCamera.stopPreview();
             mCamera.startPreview();
 

@@ -39,6 +39,7 @@ public class TessOcr {
                 e.printStackTrace();
             }
         }
+        mTess.setVariable(TessBaseAPI.VAR_CHAR_WHITELIST, "aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ1234567890',.?;/ ");
     }
     // Initialize the Tess
     public void TessInit(){
