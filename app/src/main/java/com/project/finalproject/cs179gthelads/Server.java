@@ -13,22 +13,64 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.lang.Integer;
 
 public class Server extends AsyncTask<String, String, String>{
-    private static int task = 2;
-    private Context context;
-
 
     protected void onPreExecute(){
     }
 
     protected String doInBackground(String... params){
         String details = params[0];
+        String supporter = "";
+        String street = "";
+        String city = "";
+        String state = "";
+        int postal = 0;
+        boolean supporterFlag = true;
+        boolean streetFlag = false;
+        int length = 0;
+
         details = details.replace("\n", " ");
         details = details.replace(",", " ");
         String[] splitDetails = details.split("\\s+");
+        length = splitDetails.length;
 
-        Log.d("String: ",details);
+        postal = Integer.parseInt(splitDetails[length - 1]);
+        state = splitDetails[length - 2];
+        city = splitDetails[length - 3];
+
+
+        for(int i = 0; i < (length - 3); ++i){
+            if((!splitDetails[i].matches(".*\\d.*")) && supporterFlag){
+                if(supporter.isEmpty()){
+                    supporter = supporter.concat(splitDetails[i]);
+                }
+                else{
+                    supporter = supporter.concat(" ");
+                    supporter = supporter.concat(splitDetails[i]);
+                }
+            }
+            else if(supporterFlag){
+                street = street.concat(splitDetails[i]);
+                supporterFlag = false;
+                streetFlag = true;
+            }
+            else if((!splitDetails[i].matches(".*\\d.*")) && streetFlag){
+                street = street.concat(" ");
+                street = street.concat(splitDetails[i]);
+
+            }
+            else if(streetFlag){
+                streetFlag = false;
+            }
+        }
+
+        Log.d("Supporter: ", supporter);
+        Log.d("Street", street);
+        Log.d("city", city);
+        Log.d("State", state);
+        Log.d("zip", String.valueOf(postal));
             /*String url = "http://172.119.206.111/connect.php";
             try{
                 HttpClient current = new DefaultHttpClient();
@@ -52,11 +94,6 @@ public class Server extends AsyncTask<String, String, String>{
                 return "ERROR connecting to Apache Server";
             } */
             String url = "";
-            String supporter = "";
-            String street = "";
-            String city = "";
-            String state = "";
-            int postal = 0;
             String rand = "this random string";
 
             url = "http://172.119.206.111/testinsert.php?var="+rand;
