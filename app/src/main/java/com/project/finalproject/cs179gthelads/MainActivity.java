@@ -96,6 +96,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 myString = myInput.getText().toString(); //myString <--- edited text
+                Server server = new Server();
+                server.execute(myString);
                 myDialog.dismiss();
             }
         });

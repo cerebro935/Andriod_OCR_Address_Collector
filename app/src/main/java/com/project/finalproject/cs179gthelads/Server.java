@@ -15,20 +15,21 @@ import java.io.InputStreamReader;
 import java.net.URI;
 
 public class Server extends AsyncTask<String, String, String>{
-    private static int task = 0;
+    private static int task = 2;
     private Context context;
 
-    public void decideButton(Context con, int flag){
-        context = con;
-        task = flag;
-    }
 
     protected void onPreExecute(){
     }
 
     protected String doInBackground(String... params){
-        if(task == 0){
-            String url = "http://172.119.206.111/connect.php";
+        String details = params[0];
+        details = details.replace("\n", " ");
+        details = details.replace(",", " ");
+        String[] splitDetails = details.split("\\s+");
+
+        Log.d("String: ",details);
+            /*String url = "http://172.119.206.111/connect.php";
             try{
                 HttpClient current = new DefaultHttpClient();
                 HttpGet destination = new HttpGet();
@@ -49,9 +50,7 @@ public class Server extends AsyncTask<String, String, String>{
             } catch(Exception e){
                 Log.e("ERROR PHP-URL-Exception", e.getMessage());
                 return "ERROR connecting to Apache Server";
-            }
-        }
-        else if(task == 1){
+            } */
             String url = "";
             String supporter = "";
             String street = "";
@@ -86,13 +85,9 @@ public class Server extends AsyncTask<String, String, String>{
                 Log.e("ERROR PHP-URL-Exception", e.getMessage());
                 return "ERROR connecting to Apache Server";
             }
-        }
-        else{
-            return "ERROR button press cannot be resolved";
-        }
     }
 
     protected void onPostExecute(String message){
-        Toast.makeText(context,""+message, Toast.LENGTH_LONG).show();
+
     }
 }
