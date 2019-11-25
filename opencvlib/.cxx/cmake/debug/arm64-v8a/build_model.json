@@ -1,0 +1,73 @@
+{
+  "variant": {
+    "module": {
+      "rootBuildGradleFolder": "D:\\CS179GTheLads",
+      "sdkFolder": "C:\\Users\\Danth\\AppData\\Local\\Android\\Sdk",
+      "isNativeCompilerSettingsCacheEnabled": false,
+      "isBuildOnlyTargetAbiEnabled": true,
+      "ideBuildTargetAbi": "arm64-v8a,armeabi-v7a,armeabi",
+      "splitsAbiFilterSet": [],
+      "intermediatesFolder": "D:\\CS179GTheLads\\opencvlib\\build\\intermediates",
+      "gradleModulePathName": ":opencvlib",
+      "moduleRootFolder": "D:\\CS179GTheLads\\opencvlib",
+      "makeFile": "D:\\CS179GTheLads\\opencvlib\\libcxx_helper\\CMakeLists.txt",
+      "buildSystem": "CMAKE",
+      "compilerSettingsCacheFolder": "D:\\CS179GTheLads\\.cxx",
+      "cxxFolder": "D:\\CS179GTheLads\\opencvlib\\.cxx",
+      "ndkFolder": "C:\\Users\\Danth\\AppData\\Local\\Android\\Sdk\\ndk-bundle",
+      "ndkVersion": "20.0.5594570",
+      "ndkSupportedAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
+      "ndkDefaultAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
+      "cmakeToolchainFile": "."
+    },
+    "buildSystemArgumentList": [
+      "-DANDROID_STL\u003dc++_shared"
+    ],
+    "cFlagList": [],
+    "cppFlagsList": [],
+    "variantName": "debug",
+    "soFolder": "D:\\CS179GTheLads\\opencvlib\\build\\intermediates\\cmake\\debug\\lib",
+    "objFolder": "D:\\CS179GTheLads\\opencvlib\\build\\intermediates\\cmake\\debug\\obj",
+    "jsonFolder": "D:\\CS179GTheLads\\opencvlib\\.cxx\\cmake\\debug",
+    "gradleBuildOutputFolder": "D:\\CS179GTheLads\\opencvlib\\.cxx\\cxx\\debug",
+    "isDebuggableEnabled": true,
+    "validAbiList": [
+      "ARM64_V8A",
+      "ARMEABI_V7A"
+    ],
+    "buildTargetSet": [
+      "opencv_jni_shared"
+    ]
+  },
+  "abi": "ARM64_V8A",
+  "abiPlatformVersion": 21,
+  "cxxBuildFolder": "D:\\CS179GTheLads\\opencvlib\\.cxx\\cmake\\debug\\arm64-v8a",
+  "jsonFile": "D:\\CS179GTheLads\\opencvlib\\.cxx\\cmake\\debug\\arm64-v8a\\android_gradle_build.json",
+  "gradleBuildOutputFolder": "D:\\CS179GTheLads\\opencvlib\\.cxx\\cxx\\debug\\arm64-v8a",
+  "objFolder": "D:\\CS179GTheLads\\opencvlib\\build\\intermediates\\cmake\\debug\\obj\\arm64-v8a",
+  "buildCommandFile": "D:\\CS179GTheLads\\opencvlib\\.cxx\\cmake\\debug\\arm64-v8a\\build_command.txt",
+  "buildOutputFile": "D:\\CS179GTheLads\\opencvlib\\.cxx\\cmake\\debug\\arm64-v8a\\build_output.txt",
+  "modelOutputFile": "D:\\CS179GTheLads\\opencvlib\\.cxx\\cmake\\debug\\arm64-v8a\\build_model.json",
+  "cmake": {
+    "cmakeListsWrapperFile": "D:\\CS179GTheLads\\opencvlib\\.cxx\\cxx\\debug\\arm64-v8a\\CMakeLists.txt",
+    "toolchainWrapperFile": "D:\\CS179GTheLads\\opencvlib\\.cxx\\cxx\\debug\\arm64-v8a\\android_gradle_build.toolchain.cmake",
+    "buildGenerationStateFile": "D:\\CS179GTheLads\\opencvlib\\.cxx\\cxx\\debug\\arm64-v8a\\build_generation_state.json",
+    "cacheKeyFile": "D:\\CS179GTheLads\\opencvlib\\.cxx\\cxx\\debug\\arm64-v8a\\compiler_cache_key.json",
+    "compilerCacheUseFile": "D:\\CS179GTheLads\\opencvlib\\.cxx\\cxx\\debug\\arm64-v8a\\compiler_cache_use.json",
+    "compilerCacheWriteFile": "D:\\CS179GTheLads\\opencvlib\\.cxx\\cxx\\debug\\arm64-v8a\\compiler_cache_write.json",
+    "toolchainSettingsFromCacheFile": "D:\\CS179GTheLads\\opencvlib\\.cxx\\cxx\\debug\\arm64-v8a\\compiler_settings_cache.cmake",
+    "cmakeWrappingBaseFolder": "."
+  },
+  "jsonGenerationLoggingRecordFile": "D:\\CS179GTheLads\\opencvlib\\.cxx\\cmake\\debug\\arm64-v8a\\json_generation_record.json",
+  "compileCommandsJsonFile": "D:\\CS179GTheLads\\opencvlib\\.cxx\\cmake\\debug\\arm64-v8a\\compile_commands.json"
+}

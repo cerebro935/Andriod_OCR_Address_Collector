@@ -1,0 +1,16 @@
+{
+  "buildFiles": [
+    "D:\\CS179GTheLads\\opencvlib\\libcxx_helper\\CMakeLists.txt"
+  ],
+  "cleanCommands": [
+    "C:\\Users\\Danth\\AppData\\Local\\Android\\Sdk\\cmake\\3.6.4111459\\bin\\cmake.exe --build D:\\CS179GTheLads\\opencvlib\\.cxx\\cmake\\debug\\x86_64 --target clean"
+  ],
+  "libraries": {
+    "opencv_jni_shared-Debug-x86_64": {
+      "artifactName": "opencv_jni_shared",
+      "buildCommand": "C:\\Users\\Danth\\AppData\\Local\\Android\\Sdk\\cmake\\3.6.4111459\\bin\\cmake.exe --build D:\\CS179GTheLads\\opencvlib\\.cxx\\cmake\\debug\\x86_64 --target opencv_jni_shared",
+      "abi": "x86_64",
+      "output": "D:\\CS179GTheLads\\opencvlib\\.cxx\\cmake\\debug\\x86_64\\libopencv_jni_shared.a"
+    }
+  }
+}
