@@ -34,7 +34,6 @@
             android:textColor="@color/white"
             android:textSize="20dp"
             android:textStyle="bold" />
-<!--
         <EditText
             android:id="@+id/userInput"
             android:layout_width="match_parent"
@@ -44,12 +43,7 @@
             android:fontFamily="monospace"
             android:textColor="@color/white"
             android:textSize="20dp"
-            android:textStyle="bold" /> -->
-        <ImageView
-            android:id="@+id/Image"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            />
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/submit"

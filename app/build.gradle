@@ -3,7 +3,6 @@ apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 28
-    useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.project.cs180.cs179gthelads"
         minSdkVersion 21
@@ -11,6 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        useLibrary 'org.apache.http.legacy'
     }
     buildTypes {
         release {
@@ -39,4 +39,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-ml-model-interpreter:22.0.1'
 
     implementation project(path: ':opencvlib')
+    implementation files('lib/jgeocoder-0.5-jar-with-dependencies.jar')
 }

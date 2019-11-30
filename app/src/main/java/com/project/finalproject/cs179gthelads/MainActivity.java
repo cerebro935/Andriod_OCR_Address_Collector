@@ -7,8 +7,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +21,13 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.text.FirebaseVisionText;
+import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 
 import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
@@ -33,7 +43,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     private Camera mCamera;
     private CameraPreview mPreview;
     protected String photopath;
@@ -42,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     Dialog myDialog;
     protected String myString = "no result";
     private Bitmap mybitmap;
-    private FirebaseOCR testing;
+    private Boolean go = false;
 
 
 
@@ -52,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
         OpenCVLoader.initDebug();
         myDialog = new Dialog(this);
         myTess = new TessOcr(this);
-        testing = new FirebaseOCR(this);
 
         super.onCreate(savedInstanceState);
         try{
@@ -88,18 +97,22 @@ public class MainActivity extends AppCompatActivity {
         EditText myInput;
         ImageView myImage;
         myDialog.setContentView(R.layout.popup);
+
         close = myDialog.findViewById(R.id.closetxt);
         confirmTxt = myDialog.findViewById((R.id.confirm));
-        //myInput = myDialog.findViewById(R.id.userInput);
-        myImage = myDialog.findViewById(R.id.Image);
-        myImage.setImageBitmap(mybitmap);
+        myInput = myDialog.findViewById(R.id.userInput);
+        myInput.setText(myString);
+        //myImage = myDialog.findViewById(R.id.Image);
+        //myImage.setImageBitmap(mybitmap);
         subBtn = myDialog.findViewById(R.id.submit);
 
 
         subBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                //myString = myInput.getText().toString(); //myString <--- edited text
+                myString = myInput.getText().toString(); //myString <--- edited text
+                Server server = new Server();
+                server.execute(myString);
                 myDialog.dismiss();
             }
         });
@@ -204,20 +217,42 @@ public class MainActivity extends AppCompatActivity {
             Imgproc.threshold(tmp,tmp,110,255,Imgproc.THRESH_BINARY);
             Utils.matToBitmap(tmp, bitmap);
             mybitmap = bitmap;
-
-            //bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
-            //myTess.TessInit();
-            testing.runTextRecognition(mybitmap);
-            //myString = myTess.readImage(bitmap); //myString <-- extracted info
+            runTextRecognition(mybitmap);
             Log.d("String", myString);
-            //begin popup
-            ShowPopup();
-            mCamera.stopPreview();
-            mCamera.startPreview();
+            Log.d("Here","here");
 
         }
 
     };
+
+    public void runTextRecognition(Bitmap ocrImage){
+        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(ocrImage);
+        FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance().getOnDeviceTextRecognizer();
+        detector.processImage(image)
+                .addOnSuccessListener(
+                        new OnSuccessListener<FirebaseVisionText>(){
+                            @Override
+                            public void onSuccess(FirebaseVisionText texts){
+                                myString = processTextRecognitionResult(texts);
+                                //begin popup
+                                ShowPopup();
+                                mCamera.stopPreview();
+                                mCamera.startPreview();
+                            }
+
+                        })
+                .addOnFailureListener(
+                        new OnFailureListener(){
+                            @Override
+                            public void onFailure(@NonNull Exception e){
+                                e.printStackTrace();
+                            }
+                        });
+    }
+    private String processTextRecognitionResult(FirebaseVisionText texts){
+        Log.d("Firebase OCR", texts.getText());
+        return texts.getText();
+    }
 
     // Releasing Camera
     private void releaseCamera(){
