@@ -1,4 +1,0 @@
-#Wed Nov 20 16:00:16 PST 2019
-base.0=D\:\\CS179GTheLads\\OpenCV\\build\\intermediates\\dex\\debug\\mergeDexDebug\\out\\classes.dex
-path.0=classes.dex
-renamed.0=classes.dex
