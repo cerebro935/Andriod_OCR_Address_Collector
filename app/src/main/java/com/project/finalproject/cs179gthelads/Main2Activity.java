@@ -38,13 +38,11 @@ public class Main2Activity extends AppCompatActivity {
 
     private void startConnectActivity(){
         Server server = new Server();
-        server.decideButton(this,0);
         server.execute();
     }
 
     private void startSubmitActivity(){
         Server server = new Server();
-        server.decideButton(this,1);
         server.execute();
 
     }
