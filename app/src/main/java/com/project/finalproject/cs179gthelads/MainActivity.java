@@ -5,13 +5,11 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.ColorMatrix;
-import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     Dialog myDialog;
     protected String myString = "no result";
     private Bitmap mybitmap;
+    private FirebaseOCR testing;
 
 
 
@@ -53,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
         OpenCVLoader.initDebug();
         myDialog = new Dialog(this);
         myTess = new TessOcr(this);
+        testing = new FirebaseOCR(this);
+
         super.onCreate(savedInstanceState);
         try{
             this.getSupportActionBar().hide();
@@ -197,15 +198,17 @@ public class MainActivity extends AppCompatActivity {
             bitmap = Bitmap.createScaledBitmap(bitmap, 960,720,false);
             Mat tmp = new Mat(bitmap.getWidth(), bitmap.getHeight(), CvType.CV_8UC1);
             Utils.bitmapToMat(bitmap, tmp);
+            //tmp.convertTo(tmp,-1,0.75,0);
             Imgproc.cvtColor(tmp, tmp, Imgproc.COLOR_RGB2GRAY);
             // Processing more?
-            Imgproc.threshold(tmp,tmp,90,255,Imgproc.THRESH_BINARY);
+            Imgproc.threshold(tmp,tmp,110,255,Imgproc.THRESH_BINARY);
             Utils.matToBitmap(tmp, bitmap);
             mybitmap = bitmap;
 
-            bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
-            myTess.TessInit();
-            myString = myTess.readImage(bitmap); //myString <-- extracted info
+            //bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+            //myTess.TessInit();
+            testing.runTextRecognition(mybitmap);
+            //myString = myTess.readImage(bitmap); //myString <-- extracted info
             Log.d("String", myString);
             //begin popup
             ShowPopup();

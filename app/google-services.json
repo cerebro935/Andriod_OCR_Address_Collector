@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "744827277209",
+    "firebase_url": "https://cs179-thelads.firebaseio.com",
+    "project_id": "cs179-thelads",
+    "storage_bucket": "cs179-thelads.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:744827277209:android:439eb81ad9d84250028d08",
+        "android_client_info": {
+          "package_name": "com.project.cs180.cs179gthelads"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "744827277209-7h40o7e83mjbiu36i9m9ul91l4p1ipmi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.project.cs180.cs179gthelads",
+            "certificate_hash": "951b21350f7820a9c884f9cd6ddecbec51cf2ab2"
+          }
+        },
+        {
+          "client_id": "744827277209-rumf77pljffse7p256giu3ks83s9utqh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-VIXLRqWob9VLFmSqZB52OqO3sZNrbd8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "744827277209-rumf77pljffse7p256giu3ks83s9utqh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
