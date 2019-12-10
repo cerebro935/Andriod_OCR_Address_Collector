@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.AnimationDrawable;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -20,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -54,6 +56,10 @@ public class MainActivity extends AppCompatActivity{
     private Bitmap mybitmap;
     private Boolean go = false;
 
+    //gradient layout variables
+    LinearLayout container;
+    AnimationDrawable anim;
+
 
 
     //@SuppressLint("CutPasteId")
@@ -70,6 +76,12 @@ public class MainActivity extends AppCompatActivity{
             Log.d("Error: ", e.getMessage());
         }
         setContentView(R.layout.activity_main);
+
+        //gradient
+        container = (LinearLayout) findViewById(R.id.container);
+        anim = (AnimationDrawable) container.getBackground();
+        anim.setEnterFadeDuration(6000);
+        anim.setExitFadeDuration(2000);
 
         Button captureButton = (Button) findViewById(R.id.button_capture);
         captureButton.setOnClickListener(new ButtonClickHandler());
@@ -88,6 +100,20 @@ public class MainActivity extends AppCompatActivity{
         preview.addView(overlay);
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (anim != null && !anim.isRunning())
+            anim.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (anim != null && anim.isRunning())
+            anim.stop();
     }
 
     public void ShowPopup(){

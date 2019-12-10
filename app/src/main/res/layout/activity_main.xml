@@ -2,10 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
+    android:id="@+id/container"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    >
+    android:background="#131314"
+    android:orientation="horizontal">
 
     <FrameLayout
         android:id="@+id/camera_preview"
@@ -30,10 +31,11 @@
 
     <Button
         android:id="@+id/button_capture"
-        android:text="Capture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        />
+        android:background="#FF6D00"
+        android:fontFamily="@font/acme"
+        android:text="Capture" />
 
 </LinearLayout>

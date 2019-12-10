@@ -1,3 +1,3 @@
-D:/CS179GTheLads/opencvlib/.cxx/cmake/debug/x86_64/CMakeFiles/opencv_jni_shared.dir
-D:/CS179GTheLads/opencvlib/.cxx/cmake/debug/x86_64/CMakeFiles/edit_cache.dir
-D:/CS179GTheLads/opencvlib/.cxx/cmake/debug/x86_64/CMakeFiles/rebuild_cache.dir
+C:/Users/marco/CS179G/final-project-thelads/opencvlib/.cxx/cmake/debug/x86_64/CMakeFiles/opencv_jni_shared.dir
+C:/Users/marco/CS179G/final-project-thelads/opencvlib/.cxx/cmake/debug/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/marco/CS179G/final-project-thelads/opencvlib/.cxx/cmake/debug/x86_64/CMakeFiles/rebuild_cache.dir

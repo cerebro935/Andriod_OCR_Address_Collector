@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="300dp"
     android:layout_height="300dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
     android:background="@color/lightblue"
-    android:backgroundTint="@color/colorPrimaryDark"
+    android:backgroundTint="#4CAF50"
     android:padding="5dp">
 
     <LinearLayout
@@ -29,18 +29,19 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dp"
-            android:fontFamily="monospace"
+            android:fontFamily="@font/acme"
             android:text="Is the following information correct?"
             android:textColor="@color/white"
             android:textSize="20dp"
             android:textStyle="bold" />
+
         <EditText
             android:id="@+id/userInput"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dp"
-            android:fontFamily="monospace"
+            android:fontFamily="@font/acme"
             android:textColor="@color/white"
             android:textSize="20dp"
             android:textStyle="bold" />
@@ -52,7 +53,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dp"
             android:background="@color/orange"
-            android:fontFamily="monospace"
+            android:fontFamily="@font/acme"
             android:text="Submit"
             android:textColor="@color/white"
             android:textSize="15sp"
