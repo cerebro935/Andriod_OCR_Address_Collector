@@ -42,25 +42,23 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
 public class MainActivity extends AppCompatActivity{
     private Camera mCamera;
     private CameraPreview mPreview;
     protected String photopath;
     private Uri pfile;
     private TessOcr myTess;
-    Dialog myDialog;
     protected String myString = "no result";
     private Bitmap mybitmap;
     private Boolean go = false;
-
+    protected Popup pop;
 
 
     //@SuppressLint("CutPasteId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         OpenCVLoader.initDebug();
-        myDialog = new Dialog(this);
+        pop.myDialog = new Dialog(this);
         myTess = new TessOcr(this);
 
         super.onCreate(savedInstanceState);
@@ -88,43 +86,6 @@ public class MainActivity extends AppCompatActivity{
         preview.addView(overlay);
 
 
-    }
-
-    public void ShowPopup(){
-        TextView confirmTxt;
-        TextView close;
-        Button  subBtn;
-        EditText myInput;
-        ImageView myImage;
-        myDialog.setContentView(R.layout.popup);
-
-        close = myDialog.findViewById(R.id.closetxt);
-        confirmTxt = myDialog.findViewById((R.id.confirm));
-        myInput = myDialog.findViewById(R.id.userInput);
-        myInput.setText(myString);
-        //myImage = myDialog.findViewById(R.id.Image);
-        //myImage.setImageBitmap(mybitmap);
-        subBtn = myDialog.findViewById(R.id.submit);
-
-
-        subBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                myString = myInput.getText().toString(); //myString <--- edited text
-                Server server = new Server();
-                server.execute(myString);
-                myDialog.dismiss();
-            }
-        });
-
-        close.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                myDialog.dismiss();
-            }
-        });
-        //myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        myDialog.show();
     }
 
     public class ButtonClickHandler implements View.OnClickListener
@@ -235,7 +196,8 @@ public class MainActivity extends AppCompatActivity{
                             public void onSuccess(FirebaseVisionText texts){
                                 myString = processTextRecognitionResult(texts);
                                 //begin popup
-                                ShowPopup();
+                                pop.myInput.setText(myString);
+                                pop.ShowPopup();
                                 mCamera.stopPreview();
                                 mCamera.startPreview();
                             }

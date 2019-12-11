@@ -1,9 +1,12 @@
 
 {
-	"buildFiles" : [ "D:/CS179GTheLads/opencvlib/libcxx_helper/CMakeLists.txt" ],
+	"buildFiles" : 
+	[
+		"C:/Users/marco/CS179G/tempfold/final-project-thelads/opencvlib/libcxx_helper/CMakeLists.txt"
+	],
 	"cleanCommands" : 
 	[
-		"C:\\Users\\Danth\\AppData\\Local\\Android\\Sdk\\cmake\\3.6.4111459\\bin\\cmake.exe --build D:\\CS179GTheLads\\opencvlib\\.cxx\\cmake\\debug\\armeabi-v7a --target clean"
+		"C:\\Users\\marco\\AppData\\Local\\Android\\Sdk\\cmake\\3.6.4111459\\bin\\cmake.exe --build C:\\Users\\marco\\CS179G\\tempfold\\final-project-thelads\\opencvlib\\.cxx\\cmake\\debug\\armeabi-v7a --target clean"
 	],
 	"cppFileExtensions" : [ "cpp" ],
 	"libraries" : 
@@ -12,27 +15,27 @@
 		{
 			"abi" : "armeabi-v7a",
 			"artifactName" : "opencv_jni_shared",
-			"buildCommand" : "C:\\Users\\Danth\\AppData\\Local\\Android\\Sdk\\cmake\\3.6.4111459\\bin\\cmake.exe --build D:\\CS179GTheLads\\opencvlib\\.cxx\\cmake\\debug\\armeabi-v7a --target opencv_jni_shared",
+			"buildCommand" : "C:\\Users\\marco\\AppData\\Local\\Android\\Sdk\\cmake\\3.6.4111459\\bin\\cmake.exe --build C:\\Users\\marco\\CS179G\\tempfold\\final-project-thelads\\opencvlib\\.cxx\\cmake\\debug\\armeabi-v7a --target opencv_jni_shared",
 			"buildType" : "debug",
 			"files" : 
 			[
 				
 				{
-					"flags" : "  --target=armv7-none-linux-androideabi21 --gcc-toolchain=C:/Users/Danth/AppData/Local/Android/Sdk/ndk-bundle/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Users/Danth/AppData/Local/Android/Sdk/ndk-bundle/toolchains/llvm/prebuilt/windows-x86_64/sysroot    -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -fno-addrsig -march=armv7-a -mthumb -Wa,--noexecstack -Wformat -Werror=format-security   -O0 -fno-limit-debug-info  -fPIC    -c ",
-					"src" : "D:/CS179GTheLads/opencvlib/libcxx_helper/dummy.cpp",
-					"workingDirectory" : "D:/CS179GTheLads/opencvlib/.cxx/cmake/debug/armeabi-v7a"
+					"flags" : "  --target=armv7-none-linux-androideabi --gcc-toolchain=C:/Users/marco/AppData/Local/Android/Sdk/ndk-bundle/toolchains/arm-linux-androideabi-4.9/prebuilt/windows-x86_64 --sysroot=C:/Users/marco/AppData/Local/Android/Sdk/ndk-bundle/sysroot   -isystem C:\\Users\\marco\\AppData\\Local\\Android\\Sdk\\ndk-bundle\\sources\\cxx-stl\\llvm-libc++\\include -isystem C:\\Users\\marco\\AppData\\Local\\Android\\Sdk\\ndk-bundle\\sources\\android\\support\\include -isystem C:\\Users\\marco\\AppData\\Local\\Android\\Sdk\\ndk-bundle\\sources\\cxx-stl\\llvm-libc++abi\\include  -isystem C:/Users/marco/AppData/Local/Android/Sdk/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3-d16 -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/Users/marco/CS179G/tempfold/final-project-thelads/opencvlib/libcxx_helper/dummy.cpp",
+					"workingDirectory" : "C:/Users/marco/CS179G/tempfold/final-project-thelads/opencvlib/.cxx/cmake/debug/armeabi-v7a"
 				}
 			],
-			"output" : "D:/CS179GTheLads/opencvlib/.cxx/cmake/debug/armeabi-v7a/libopencv_jni_shared.a",
-			"toolchain" : "3662396689"
+			"output" : "C:/Users/marco/CS179G/tempfold/final-project-thelads/opencvlib/.cxx/cmake/debug/armeabi-v7a/libopencv_jni_shared.a",
+			"toolchain" : "2989205145"
 		}
 	},
 	"toolchains" : 
 	{
-		"3662396689" : 
+		"2989205145" : 
 		{
-			"cCompilerExecutable" : "C:/Users/Danth/AppData/Local/Android/Sdk/ndk-bundle/toolchains/llvm/prebuilt/windows-x86_64/bin/clang.exe",
-			"cppCompilerExecutable" : "C:/Users/Danth/AppData/Local/Android/Sdk/ndk-bundle/toolchains/llvm/prebuilt/windows-x86_64/bin/clang++.exe"
+			"cCompilerExecutable" : "C:/Users/marco/AppData/Local/Android/Sdk/ndk-bundle/toolchains/llvm/prebuilt/windows-x86_64/bin/clang.exe",
+			"cppCompilerExecutable" : "C:/Users/marco/AppData/Local/Android/Sdk/ndk-bundle/toolchains/llvm/prebuilt/windows-x86_64/bin/clang++.exe"
 		}
 	}
 }
