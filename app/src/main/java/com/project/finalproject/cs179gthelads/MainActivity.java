@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         OpenCVLoader.initDebug();
+        pop = new Popup();
         pop.myDialog = new Dialog(this);
         myTess = new TessOcr(this);
 

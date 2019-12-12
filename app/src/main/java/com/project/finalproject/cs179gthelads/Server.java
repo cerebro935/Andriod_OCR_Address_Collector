@@ -1,9 +1,7 @@
 package com.project.finalproject.cs179gthelads;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import net.sourceforge.jgeocoder.AddressComponent;
 import net.sourceforge.jgeocoder.us.AddressParser;
@@ -34,9 +32,6 @@ public class Server extends AsyncTask<String, String, String>{
         String direction = "";
         String url = "";
         int postal = 0;
-        boolean supporterFlag = true;
-        boolean streetFlag = false;
-        int length = 0;
 
         /*start of the parsing of the return address information.
          this parsing does not yet take into account addresses that contain a P.O box, addresses
@@ -44,8 +39,7 @@ public class Server extends AsyncTask<String, String, String>{
          */
 
         //remove some symbols from the submitted text
-        details = details.replace("\n", " ");
-        details = details.replace(",", " ");
+        details = details.replace("\n", ", ");
         Log.d("Details", details);
 
         //use Jgeocode API to parse the address
