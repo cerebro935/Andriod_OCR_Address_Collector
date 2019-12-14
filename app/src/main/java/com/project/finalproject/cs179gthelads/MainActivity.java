@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity{
     private CameraPreview mPreview;
     protected String photopath;
     private Uri pfile;
-    private TessOcr myTess;
     protected String myString = "no result";
     private Bitmap mybitmap;
     private Boolean go = false;
@@ -60,7 +59,6 @@ public class MainActivity extends AppCompatActivity{
         OpenCVLoader.initDebug();
         pop = new Popup();
         pop.myDialog = new Dialog(this);
-        myTess = new TessOcr(this);
 
         super.onCreate(savedInstanceState);
         try{
@@ -73,9 +71,8 @@ public class MainActivity extends AppCompatActivity{
         Button captureButton = (Button) findViewById(R.id.button_capture);
         captureButton.setOnClickListener(new ButtonClickHandler());
         // Create an instance of Camera
-        Log.d("Hello", "HelLOO");
         mCamera = getCameraInstance();
-        Log.d("Hello", "HelLOO");
+
 
 
         // Create our Preview view and set it as a the content
@@ -88,7 +85,7 @@ public class MainActivity extends AppCompatActivity{
 
 
     }
-
+    // Handles Capture button
     public class ButtonClickHandler implements View.OnClickListener
     {
         public void onClick( View view ){
@@ -126,7 +123,7 @@ public class MainActivity extends AppCompatActivity{
         return c; // returns null if camera is unavailable
     }
 
-    // Create file
+    // Create file for image that is to be captured.
     private File createImageFile(){
         File folder = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         if(!folder.exists()) {
@@ -162,31 +159,30 @@ public class MainActivity extends AppCompatActivity{
             } catch(IOException e){
                 Log.d("Error-", "Error Accessing File: " + e.getMessage());
             }
-            // Seprate this into a function to reduce coding space
+            // Seprate this into a function to reduce coding space?
+            // Create bitmap.
             BitmapFactory.Options options = new BitmapFactory.Options();
             pfile = Uri.fromFile(pictureFile);
             Bitmap bitmap = BitmapFactory.decodeFile(new File(pfile.getPath()).getAbsolutePath(), options);
-            Log.d("Height", Integer.toString(options.outHeight));
-            Log.d("Width", Integer.toString(options.outWidth));
+            // Delete unecessary file
             pictureFile.delete();
+            // This needs to be corrected as some bitmaps may not have these properties. works on samsung s9+
             bitmap = Bitmap.createBitmap(bitmap, 1000,950,2280, 1260);
             bitmap = Bitmap.createScaledBitmap(bitmap, 960,720,false);
+            // Create Mat for OPENCV
             Mat tmp = new Mat(bitmap.getWidth(), bitmap.getHeight(), CvType.CV_8UC1);
             Utils.bitmapToMat(bitmap, tmp);
-            //tmp.convertTo(tmp,-1,0.75,0);
+            // Thresh hold for binarization
             Imgproc.cvtColor(tmp, tmp, Imgproc.COLOR_RGB2GRAY);
             // Processing more?
             Imgproc.threshold(tmp,tmp,110,255,Imgproc.THRESH_BINARY);
             Utils.matToBitmap(tmp, bitmap);
             mybitmap = bitmap;
             runTextRecognition(mybitmap);
-            Log.d("String", myString);
-            Log.d("Here","here");
-
         }
 
     };
-
+    // Function for FirebaseVision
     public void runTextRecognition(Bitmap ocrImage){
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(ocrImage);
         FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance().getOnDeviceTextRecognizer();
@@ -197,8 +193,7 @@ public class MainActivity extends AppCompatActivity{
                             public void onSuccess(FirebaseVisionText texts){
                                 myString = processTextRecognitionResult(texts);
                                 //begin popup
-                                pop.myInput.setText(myString);
-                                pop.ShowPopup();
+                                pop.ShowPopup(myString);
                                 mCamera.stopPreview();
                                 mCamera.startPreview();
                             }

@@ -15,7 +15,7 @@ public class Popup {
     EditText myInput;
     Dialog myDialog;
 
-    public void ShowPopup(){
+    public void ShowPopup(String test){
         myDialog.setContentView(R.layout.popup);
 
         close = myDialog.findViewById(R.id.closetxt);
@@ -23,6 +23,7 @@ public class Popup {
         myInput = myDialog.findViewById(R.id.userInput);
         //myInput.setText(myString);
         subBtn = myDialog.findViewById(R.id.submit);
+        myInput.setText(test);
 
 
         subBtn.setOnClickListener(new View.OnClickListener(){
