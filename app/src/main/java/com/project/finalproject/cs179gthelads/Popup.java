@@ -15,13 +15,23 @@ public class Popup {
     EditText myInput;
     Dialog myDialog;
 
+    /*
+    This function is in charge of the popup which displays the extracted text for
+    the user to edit, submit, or cancel submission.
+
+    subBtn.setOnClickListener adds functionality to submit button. Creates instance
+    of server, passing in the string to execute function to be submitted into
+    database.
+
+    close.setOnClickListener adds functionality to x button that dismisses the
+    dialogue and allows user to retake picture.
+
+    */
     public void ShowPopup(String test){
         myDialog.setContentView(R.layout.popup);
-
         close = myDialog.findViewById(R.id.closetxt);
         confirmTxt = myDialog.findViewById((R.id.confirm));
         myInput = myDialog.findViewById(R.id.userInput);
-        //myInput.setText(myString);
         subBtn = myDialog.findViewById(R.id.submit);
         myInput.setText(test);
 
@@ -29,7 +39,6 @@ public class Popup {
         subBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                //myString = myInput.getText().toString(); //myString <--- edited text
                 Server server = new Server();
                 server.execute((myInput.getText().toString()));
                 myDialog.dismiss();
@@ -42,6 +51,7 @@ public class Popup {
                 myDialog.dismiss();
             }
         });
+
         myDialog.show();
     }
 }
